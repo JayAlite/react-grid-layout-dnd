@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import DragFromOutside from "./components/DragFromOutside";
 
 function App() {
+  const getLayout = JSON.parse(window.localStorage.getItem("layouts"));
+
+  const [layout, setLayout] = useState(
+    getLayout !== null && Object.keys(getLayout).length > 0
+      ? getLayout
+      : { lg: [], md: [], sm: [], xs: [], xxs: [] }
+  );
+
+  const onLayoutChange = (layout, allLayout) => {
+    setLayout(allLayout);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <div>Hey I am making dynamic grid layout</div>
+      <p>{JSON.stringify(layout, 2)}</p>
+      <DragFromOutside
+        onLayoutChange={onLayoutChange}
+        layout={layout}
+        setLayout={setLayout}
+      />
+    </>
   );
 }
 
